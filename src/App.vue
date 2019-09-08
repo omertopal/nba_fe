@@ -1,28 +1,35 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-app>
+    <nav>
+      <v-app-bar app
+      absolute
+      dense
+      dark
+      shrink-on-scroll
+      src="../public/yahoo-fantasy.jpg" 
+      >
+        <v-toolbar-title class="headline text-uppercase">
+          
+        </v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn
+          text
+          x-large
+          href="https://basketball.fantasysports.yahoo.com/"
+          target="_blank"
+        >
+          <span class="mr-2">YAHOO! FANTASY NBA</span>
+        </v-btn>
+      </v-app-bar>          
+      <v-content>
+        <router-view/>
+      </v-content>
+    </nav> 
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  name: 'app',
-  components: {
-    HelloWorld
-  }
+  name: 'App',
 }
 </script>
-
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
