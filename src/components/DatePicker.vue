@@ -12,12 +12,11 @@
   >
     <template v-slot:activator="{ on }">
       <v-text-field
-        v-model="date"
-        label="Select Date"
+        v-model="date"        
         append-icon="mdi-calendar"
         readonly
         v-on="on"
-      />
+      > {{ dateLabel }} </v-text-field>
     </template>
     <v-date-picker
       v-model="date"
@@ -47,9 +46,11 @@
 export default {
   name: 'DatePicker',
   components: {},
-  props: {},
+  props: {
+    dateLabel: String,
+  },
   data: () => ({
-    date: new Date().toISOString().substr(0, 10),
+    date: '',
     menu: false,
     modal: false
   }),

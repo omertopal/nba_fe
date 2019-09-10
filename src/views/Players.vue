@@ -71,6 +71,9 @@
                                 <v-checkbox v-model="editedItem.isMyBoolean" label="On My Team"></v-checkbox>
                                 <v-checkbox v-model="editedItem.isPotentialBoolean" label="Is Potential"></v-checkbox>
                               </v-row>
+                            </v-flex> 
+                            <v-flex xs12 sm6 md3>
+                              <DatePicker dateLabel="Injury End Date" @dateSelected="editedItem.injEnd=$event" />                              
                             </v-flex>                                                                                                                                                                       
                           </v-layout>
                         </v-container>
@@ -107,11 +110,13 @@
 </template>
 <script>
 import LeftMenu from '../components/LeftMenu';
+import DatePicker from '../components/DatePicker';
 const API_URL = 'http://erp.inovenso.com:8084/nba/players';
 const TEAMS_API_URL = 'http://erp.inovenso.com:8084/nba/teams';
 export default {
     components:{
-      LeftMenu
+      LeftMenu,
+      DatePicker
     },
     data () {
     return {
@@ -242,6 +247,7 @@ export default {
         isPotential: item.isPotentialBoolean ? 1 : 0,
         gamesPlayed : item.gamesPlayed,
         avgPts: item.avgPts,
+        injEnd: item.injEnd
       })
       .then(response => {        
         if (response.status === 201) {
@@ -267,6 +273,7 @@ export default {
         isPotential: item.isPotentialBoolean ? 1 : 0,
         gamesPlayed : item.gamesPlayed,
         avgPts: item.avgPts,
+        injEnd: item.injEnd
       })
       .then(response => {
         if (response.status === 200) {
