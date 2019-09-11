@@ -5,6 +5,7 @@ import Schedule from './views/Schedule.vue'
 import Players from './views/Players.vue'
 import Teams from './views/Teams.vue'
 import Injuries from './views/Injuries.vue'
+import Calculations from './views/Calculations.vue'
 
 Vue.use(Router)
 
@@ -15,6 +16,11 @@ export default new Router({
       name: 'myteam',
       component: MyTeam
     },    
+    {
+      path: '/calculations',
+      name: 'calculations',
+      component: Calculations
+    },
     {
       path: '/schedule',
       name: 'schedule',

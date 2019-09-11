@@ -60,8 +60,9 @@ export default {
         drawer: true,
         backgroundcolor: 'primary',
         items: [
-            { title: 'My Team',link: 'myteam',  icon: 'mdi-basketball-hoop-outline' },          
-            { title: 'Schedule', link: 'schedule',  icon: 'mdi-calendar-month-outline' },
+            { title: 'My Team',link: 'myteam',  icon: 'mdi-basketball-hoop-outline' },  
+            {title: 'Calculations',link: 'calculations',  icon: 'mdi-calculator'  },        
+            { title: 'Schedule', link: 'schedule',  icon: 'mdi-calendar-clock' },
             {title: 'Teams',link: 'teams',  icon: 'mdi-account-group'  },
             {title: 'Players',link: 'players',  icon: 'mdi-account-circle'  },
             {title: 'Injuries',link: 'injuries',  icon: 'mdi-hospital-box'  },
