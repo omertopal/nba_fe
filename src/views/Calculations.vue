@@ -21,9 +21,19 @@
                     inset
                     vertical
                   ></v-divider>
-                  <v-spacer></v-spacer>                  
                 </v-toolbar>
-                <v-text-field v-model="search" label="Search " class="mx-4"></v-text-field>
+                <v-flex xs1></v-flex>
+                <v-flex xs6>
+                  <v-combobox
+                    :items="calculationsListText"
+                    label="Select Calculation Id"                    
+                    item-text="calculationText"
+                    single-line
+                    return-object
+                    v-on:change="getGameDateRosters"
+                  ></v-combobox>
+                </v-flex>                
+                <v-text-field v-model="search" label="Search " class="mx-4"></v-text-field>              
               </template> 
               <template v-slot:body.append>                    
               </template>                          
@@ -41,6 +51,7 @@ export default {
     },
     data () {
     return {
+      calculationsList:[],
       gameDateRosters:[],
       search: '',     
     }
@@ -58,6 +69,12 @@ export default {
         { text: 'UT',  value: 'utPlayer'  },
       ]
     },   
+    calculationsListText(){
+      return this.calculationsList.map((item) => {           
+        item.calculationText = 'CALC '+item.calcId+' - '+item.runTime;        
+        return item;    
+      })
+    }, 
     gameDateRostersComputed(){
       return this.gameDateRosters.map((item) => { 
         if(item.totalPts) {
@@ -89,22 +106,31 @@ export default {
     },
   },
   created() {    
-    this.getGameDateRosters();  
+    this.getCalculationList();
   },
   watch: {
     dialog (val) {
       val || this.close()
     },
   },
-  methods: {           
-    getGameDateRosters(){     
-        this.$axios.get(API_URL)
-            .then(response => {
-                this.gameDateRosters = response.data
-            }) 
-            .catch(error => {
-                console.log(error);
-            });                         
+  methods: {     
+    getCalculationList(){
+      this.$axios.get(API_URL+'/calculationIdList')
+        .then(response => {
+            this.calculationsList = response.data
+        }) 
+        .catch(error => {
+            console.log(error);
+        });
+    },     
+    getGameDateRosters(item){     
+      this.$axios.get(API_URL+'/calculations/'+item.calcId)
+        .then(response => {
+            this.gameDateRosters = response.data
+        }) 
+        .catch(error => {
+            console.log(error);
+        });                         
     },    
     filterOnlyCapsText (value, search) {
       return value != null &&
