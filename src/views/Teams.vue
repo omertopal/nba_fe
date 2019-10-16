@@ -6,7 +6,8 @@
           <v-flex xs9>
             <v-data-table
               :headers="headers"
-              :items="teams"
+              :items="teamsComputed"
+              :items-per-page="30"
               item-key="code"
               sort-by="code"
               class="elevation-1"
@@ -100,9 +101,50 @@ export default {
     headers () {
       return [
         { text: 'Team Code',align: 'left',sortable: true, value: 'code'},        
-        { text: 'Team Name',  value: 'name'  },          
+        { text: 'Team Name',  value: 'name'  },
+        { text: '1_4',  value: 'gameDays._1_4'  },
+        { text: '1_5',  value: 'gameDays._1_5'  },
+        { text: '1_6',  value: 'gameDays._1_6'  },
+        { text: 'G1',  value: 'gameDays._1_GAME'  },          
+        { text: 'G2',  value: 'gameDays._2_GAME'  },
+        { text: 'G3',  value: 'gameDays._3_GAME'  },
+        { text: 'G4',  value: 'gameDays._4_GAME'  }, 
+        { text: 'G5',  value: 'gameDays._5_GAME'  },          
+        { text: 'G6',  value: 'gameDays._6_GAME'  },
+        { text: 'G7',  value: 'gameDays._7_GAME'  },
+        { text: 'G8',  value: 'gameDays._8_GAME'  }, 
+        { text: 'G9',  value: 'gameDays._9_GAME'  },          
+        { text: 'G10',  value: 'gameDays._10_GAME'  },
+
       ]
-    },    
+    }, 
+    teamsComputed(){
+      return this.teams.map((item) => {   
+        item.gameDays._1_4 = 0;
+        item.gameDays._1_5 = 0;
+        item.gameDays._1_6 = 0;
+        item.gameDays.ALL = 0;
+        if(item.gameDays._1_GAME>0){
+          item.gameDays._1_4 += item.gameDays._1_GAME;
+        } 
+        if(item.gameDays._2_GAME>0){
+          item.gameDays._1_4 += item.gameDays._2_GAME;
+        } 
+        if(item.gameDays._3_GAME>0){
+          item.gameDays._1_4 += item.gameDays._3_GAME;
+        }
+        if(item.gameDays._4_GAME>0){
+          item.gameDays._1_4 += item.gameDays._4_GAME;
+        }
+        if(item.gameDays._5_GAME>0){
+          item.gameDays._1_5 = item.gameDays._1_4 + item.gameDays._5_GAME;
+        }  
+        if(item.gameDays._6_GAME>0){
+          item.gameDays._1_6 += item.gameDays._1_4 + item.gameDays._5_GAME + item.gameDays._6_GAME;
+        }      
+        return item;    
+      })
+    },   
     formTitle () {
       return this.editedIndex === -1 ? 'New Team' : 'Edit Team'
     },
