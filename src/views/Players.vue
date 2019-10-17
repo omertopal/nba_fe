@@ -8,7 +8,8 @@
               :headers="headers"
               :items="playersComputed"
               item-key="id"
-              sort-by="product"
+              sort-by="sira"
+              :items-per-page="50"
               class="elevation-1"
               :search="search"
               :custom-filter="filterOnlyCapsText"
@@ -143,7 +144,8 @@ export default {
         { text: 'Q-Rank', align: 'center', value: 'sira'  },
         { text: 'Player Name',align: 'left',sortable: true, value: 'name'},        
         { text: 'Team',  value: 'team.name'  },   
-        { text: 'Positions', align: 'center', value: 'playerPositions', sortable: false },     
+        { text: 'Positions', align: 'center', value: 'playerPositions', sortable: false }, 
+        { text: 'Games Played', align: 'center', value: 'gamesPlayed', sortable: false },     
         { text: 'Avarage Points', align: 'center', value: 'avgPts', sortable: false },        
         { text: 'Actions', value: 'action', sortable: false },
       ]

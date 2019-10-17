@@ -1,7 +1,23 @@
 <template>
     <v-container fluid>   
       <LeftMenu/>     
-        <v-layout row wrap>   
+        <v-layout row wrap>  
+          <v-flex xs1/> 
+          <v-flex xs6>
+            <v-combobox
+              :items="calculationsListText"
+              label="Select Calculation Id"                    
+              item-text="calculationText"
+              single-line
+              return-object
+              v-on:change="getGameDateRosters"
+            ></v-combobox>
+          </v-flex> 
+          <v-flex xs1/>   
+          <v-flex xs2>
+            <v-btn color="primary" dark class="mb-2" @click="calculate">Calculate</v-btn>
+          </v-flex> 
+          <v-flex xs2/>
           <v-flex xs1></v-flex>
           <v-flex xs11>
             <v-data-table
@@ -21,18 +37,7 @@
                     inset
                     vertical
                   ></v-divider>
-                </v-toolbar>
-                <v-flex xs1></v-flex>
-                <v-flex xs6>
-                  <v-combobox
-                    :items="calculationsListText"
-                    label="Select Calculation Id"                    
-                    item-text="calculationText"
-                    single-line
-                    return-object
-                    v-on:change="getGameDateRosters"
-                  ></v-combobox>
-                </v-flex>                
+                </v-toolbar>                           
                 <v-text-field v-model="search" label="Search " class="mx-4"></v-text-field>              
               </template> 
               <template v-slot:body.append>                    
@@ -71,7 +76,7 @@ export default {
     },   
     calculationsListText(){
       return this.calculationsList.map((item) => {           
-        item.calculationText = 'CALC '+item.calcId+' - '+item.runTime;        
+        item.calculationText = '  CALC '+item.calcId+' - '+item.runTime;        
         return item;    
       })
     }, 
@@ -113,7 +118,16 @@ export default {
       val || this.close()
     },
   },
-  methods: {     
+  methods: {  
+    calculate (){      
+      this.$axios.post(API_URL+'/calcUsage/STD')
+        .then(response => {
+            this.gameDateRosters = response.data
+        }) 
+        .catch(error => {
+            console.log(error);
+        });
+    },   
     getCalculationList(){
       this.$axios.get(API_URL+'/calculationIdList')
         .then(response => {

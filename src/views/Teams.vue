@@ -9,7 +9,8 @@
               :items="teamsComputed"
               :items-per-page="30"
               item-key="code"
-              sort-by="code"
+              sort-by="gameDays._1_5"
+              :sort-desc=true
               class="elevation-1"
               :search="search"
               :custom-filter="filterOnlyCapsText"
@@ -102,9 +103,11 @@ export default {
       return [
         { text: 'Team Code',align: 'left',sortable: true, value: 'code'},        
         { text: 'Team Name',  value: 'name'  },
-        { text: '1_4',  value: 'gameDays._1_4'  },
-        { text: '1_5',  value: 'gameDays._1_5'  },
-        { text: '1_6',  value: 'gameDays._1_6'  },
+        { text: 'ALL',  value: 'gameDays.ALL'  },
+        { text: '1-3',  value: 'gameDays._1_3'  },
+        { text: '1-4',  value: 'gameDays._1_4'  },
+        { text: '1-5',  value: 'gameDays._1_5'  },
+        { text: '1-6',  value: 'gameDays._1_6'  },
         { text: 'G1',  value: 'gameDays._1_GAME'  },          
         { text: 'G2',  value: 'gameDays._2_GAME'  },
         { text: 'G3',  value: 'gameDays._3_GAME'  },
@@ -113,35 +116,69 @@ export default {
         { text: 'G6',  value: 'gameDays._6_GAME'  },
         { text: 'G7',  value: 'gameDays._7_GAME'  },
         { text: 'G8',  value: 'gameDays._8_GAME'  }, 
-        { text: 'G9',  value: 'gameDays._9_GAME'  },          
-        { text: 'G10',  value: 'gameDays._10_GAME'  },
+        { text: 'G9',  value: 'gameDays._9_GAME'  },    
 
       ]
     }, 
     teamsComputed(){
-      return this.teams.map((item) => {   
+      return this.teams.map((item) => { 
+        item.gameDays._1_3 = 0;  
         item.gameDays._1_4 = 0;
         item.gameDays._1_5 = 0;
         item.gameDays._1_6 = 0;
         item.gameDays.ALL = 0;
         if(item.gameDays._1_GAME>0){
-          item.gameDays._1_4 += item.gameDays._1_GAME;
+          item.gameDays._1_3 += item.gameDays._1_GAME;
         } 
         if(item.gameDays._2_GAME>0){
-          item.gameDays._1_4 += item.gameDays._2_GAME;
+          item.gameDays._1_3 += item.gameDays._2_GAME;
         } 
         if(item.gameDays._3_GAME>0){
-          item.gameDays._1_4 += item.gameDays._3_GAME;
+          item.gameDays._1_3 += item.gameDays._3_GAME;
         }
+        item.gameDays._1_4 = item.gameDays._1_3;
         if(item.gameDays._4_GAME>0){
           item.gameDays._1_4 += item.gameDays._4_GAME;
         }
+
+        item.gameDays.ALL = item.gameDays._1_4;
+        item.gameDays._1_5 = item.gameDays._1_4;
         if(item.gameDays._5_GAME>0){
-          item.gameDays._1_5 = item.gameDays._1_4 + item.gameDays._5_GAME;
+          item.gameDays._1_5 += item.gameDays._5_GAME;
+          item.gameDays.ALL += item.gameDays._5_GAME;
         }  
+
         if(item.gameDays._6_GAME>0){
           item.gameDays._1_6 += item.gameDays._1_4 + item.gameDays._5_GAME + item.gameDays._6_GAME;
-        }      
+          item.gameDays.ALL += item.gameDays._6_GAME;
+        } 
+        if(item.gameDays._7_GAME>0){
+          item.gameDays.ALL += item.gameDays._7_GAME;          
+        } 
+        if(item.gameDays._8_GAME>0){
+          item.gameDays.ALL += item.gameDays._8_GAME;          
+        } 
+        if(item.gameDays._9_GAME>0){
+          item.gameDays.ALL += item.gameDays._9_GAME;        
+        } 
+        if(item.gameDays._10_GAME>0){
+          item.gameDays.ALL += item.gameDays._10_GAME;           
+        } 
+        if(item.gameDays._11_GAME>0){
+          item.gameDays.ALL += item.gameDays._11_GAME;           
+        } 
+        if(item.gameDays._12_GAME>0){
+          item.gameDays.ALL += item.gameDays._12_GAME;           
+        }
+        if(item.gameDays._13_GAME>0){
+          item.gameDays.ALL += item.gameDays._13_GAME;           
+        }
+        if(item.gameDays._14_GAME>0){
+          item.gameDays.ALL += item.gameDays._14_GAME;           
+        }
+        if(item.gameDays._15_GAME>0){
+          item.gameDays.ALL += item.gameDays._15_GAME;           
+        }    
         return item;    
       })
     },   

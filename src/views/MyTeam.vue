@@ -107,6 +107,7 @@
 </template>
 <script>
 import LeftMenu from '../components/LeftMenu';
+const PLAYERS_API_URL = 'http://erp.inovenso.com:8084/nba/players';
 const API_URL = 'http://erp.inovenso.com:8084/nba/players/myPlayers';
 const TEAMS_API_URL = 'http://erp.inovenso.com:8084/nba/teams';
 export default {
@@ -253,7 +254,7 @@ export default {
       }); 
     },
     updatePlayer(item){
-      this.$axios.put(API_URL, {
+      this.$axios.put(PLAYERS_API_URL, {
         id: item.id,
         name: item.name,
         team : item.team.code,
@@ -270,7 +271,7 @@ export default {
       })
       .then(response => {
         if (response.status === 200) {
-          Object.assign(this.players[this.editedIndex], this.editedItem)
+          this.getPlayers();
         }         
       }) 
       .catch(error => {
