@@ -10,7 +10,7 @@
               item-text="calculationText"
               single-line
               return-object
-              v-on:change="getGameDateRosters"
+              v-on:change="calculationIdChanged"
             ></v-combobox>
           </v-flex> 
           <v-flex xs1/>   
@@ -19,7 +19,32 @@
           </v-flex> 
           <v-flex xs2/>
           <v-flex xs1></v-flex>
-          <v-flex xs11>
+          <v-flex xs10>
+            <v-data-table
+              :headers="teamHeaders"
+              :items="teamBenefitList"
+              item-key="team"
+              sort-by="utCount"
+              :sort-desc=true
+              class="elevation-1"
+              :search="search"
+              :custom-filter="filterOnlyCapsText"
+              >   
+              <template v-slot:top>                                           
+                <v-text-field v-model="search" label="Search " class="mx-4"></v-text-field>              
+              </template>           
+              <template v-slot:body.append>                    
+              </template>                          
+            </v-data-table>
+          </v-flex>
+          <v-flex xs12>
+            <v-divider class="mx-4"
+                      inset
+                      vertical>
+            </v-divider>
+          </v-flex>
+          <v-flex xs1></v-flex>
+          <v-flex xs10>
             <v-data-table
               :headers="headers"
               :items="gameDateRostersComputed"
@@ -29,15 +54,7 @@
               :search="search"
               :custom-filter="filterOnlyCapsText"
               >
-              <template v-slot:top>
-                <v-toolbar flat color="white">
-                  <v-toolbar-title>GameDateRosters</v-toolbar-title>
-                  <v-divider
-                    class="mx-4"
-                    inset
-                    vertical
-                  ></v-divider>
-                </v-toolbar>                           
+              <template v-slot:top>                                           
                 <v-text-field v-model="search" label="Search " class="mx-4"></v-text-field>              
               </template> 
               <template v-slot:body.append>                    
@@ -57,11 +74,24 @@ export default {
     data () {
     return {
       calculationsList:[],
+      teamBenefitList:[],
       gameDateRosters:[],
       search: '',     
     }
   },
   computed: {
+    teamHeaders () {
+      return [
+        { text: 'Team',align: 'left',sortable: true, value: 'team'},  
+        { text: 'Total Days',align: 'left',sortable: true, value: 'totalCount'},              
+        { text: 'PG',  value: 'pgCount'  },      
+        { text: 'SG',  value: 'sgCount'  },
+        { text: 'SF',  value: 'sfCount'  },
+        { text: 'PF',  value: 'pfCount'  },
+        { text: 'C',  value: 'cCount'  },
+        { text: 'UT',  value: 'utCount'  },
+      ]
+    }, 
     headers () {
       return [
         { text: 'Date',align: 'left',sortable: true, value: 'gameDate'},  
@@ -79,7 +109,7 @@ export default {
         item.calculationText = '  CALC '+item.calcId+' - '+item.runTime;        
         return item;    
       })
-    }, 
+    },        
     gameDateRostersComputed(){
       return this.gameDateRosters.map((item) => { 
         if(item.totalPts) {
@@ -122,7 +152,8 @@ export default {
     calculate (){      
       this.$axios.post(API_URL+'/calcUsage/STD')
         .then(response => {
-            this.gameDateRosters = response.data
+            this.gameDateRosters = response.data;
+            this.getCalculationList();
         }) 
         .catch(error => {
             console.log(error);
@@ -136,11 +167,24 @@ export default {
         .catch(error => {
             console.log(error);
         });
+    }, 
+    calculationIdChanged(item){
+      this.getTeamBenefitList(item);
+      this.getGameDateRosters(item);
+    },
+    getTeamBenefitList(item){
+      this.$axios.get(API_URL+'/teamBenefitList/'+item.calcId)
+        .then(response => {
+            this.teamBenefitList = response.data
+        }) 
+        .catch(error => {
+            console.log(error);
+        });
     },     
     getGameDateRosters(item){     
       this.$axios.get(API_URL+'/calculations/'+item.calcId)
         .then(response => {
-            this.gameDateRosters = response.data
+            this.gameDateRosters = response.data;            
         }) 
         .catch(error => {
             console.log(error);

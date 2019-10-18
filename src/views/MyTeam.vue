@@ -8,7 +8,7 @@
               :headers="headers"
               :items="playersComputed"
               item-key="id"
-              sort-by="product"
+              sort-by="sira"
               class="elevation-1"
               :search="search"
               :custom-filter="filterOnlyCapsText"
