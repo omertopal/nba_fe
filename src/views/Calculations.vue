@@ -21,6 +21,28 @@
           <v-flex xs1></v-flex>
           <v-flex xs10>
             <v-data-table
+              :headers="playerHeaders"
+              :items="playerBenefitList"
+              item-key="player"
+              sort-by="totalUsage"
+              :sort-desc=true
+              class="elevation-1"
+              :search="search"
+              :custom-filter="filterOnlyCapsText"
+              >             
+              <template v-slot:body.append>                    
+              </template>                          
+            </v-data-table>
+          </v-flex>
+          <v-flex xs12>
+            <v-divider class="mx-4"
+                      inset
+                      vertical>
+            </v-divider>
+          </v-flex>
+          <v-flex xs1></v-flex>
+          <v-flex xs10>
+            <v-data-table
               :headers="teamHeaders"
               :items="teamBenefitList"
               item-key="team"
@@ -76,10 +98,18 @@ export default {
       calculationsList:[],
       teamBenefitList:[],
       gameDateRosters:[],
+      playerBenefitList:[],
       search: '',     
     }
   },
   computed: {
+    playerHeaders(){
+      return [
+        { text: 'Player Name',align: 'left',sortable: true, value: 'playerName'},  
+        { text: 'Total Usage',align: 'left',sortable: true, value: 'totalUsage'},   
+        { text: 'Must Have',align: 'left',sortable: true, value: 'mustHave'},                             
+      ]
+    },
     teamHeaders () {
       return [
         { text: 'Team',align: 'left',sortable: true, value: 'team'},  
@@ -152,13 +182,14 @@ export default {
     calculate (){      
       this.$axios.post(API_URL+'/calcUsage/STD')
         .then(response => {
-            this.gameDateRosters = response.data;
+            this.gameDateRosters = response.data.gameDateRosterList;
+            this.playerBenefitList = response.data.playerUsageList;
             this.getCalculationList();
         }) 
         .catch(error => {
             console.log(error);
         });
-    },   
+    },       
     getCalculationList(){
       this.$axios.get(API_URL+'/calculationIdList')
         .then(response => {
@@ -184,7 +215,8 @@ export default {
     getGameDateRosters(item){     
       this.$axios.get(API_URL+'/calculations/'+item.calcId)
         .then(response => {
-            this.gameDateRosters = response.data;            
+            this.gameDateRosters = response.data.gameDateRosterList;
+            this.playerBenefitList = response.data.playerUsageList;            
         }) 
         .catch(error => {
             console.log(error);

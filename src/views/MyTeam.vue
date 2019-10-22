@@ -8,8 +8,9 @@
               :headers="headers"
               :items="playersComputed"
               item-key="id"
-              sort-by="sira"
+              sort-by="avgPts"
               class="elevation-1"
+              :sort-desc="true"
               :search="search"
               :custom-filter="filterOnlyCapsText"
               >
@@ -140,7 +141,7 @@ export default {
         { text: 'Player Name',align: 'left',sortable: true, value: 'name'},        
         { text: 'Team',  value: 'team.name'  },   
         { text: 'Positions', align: 'center', value: 'playerPositions', sortable: false },     
-        { text: 'Avarage Points', align: 'center', value: 'avgPts', sortable: false },        
+        { text: 'Avarage Points', align: 'center', value: 'avgPts', sortable: true },        
         { text: 'Actions', value: 'action', sortable: false },
       ]
     },
