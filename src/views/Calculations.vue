@@ -3,7 +3,7 @@
       <LeftMenu/>     
         <v-layout row wrap>  
           <v-flex xs1/> 
-          <v-flex xs6>
+          <v-flex xs4>
             <v-combobox
               :items="calculationsListText"
               label="Select Calculation Id"                    
@@ -13,8 +13,19 @@
               v-on:change="calculationIdChanged"
             ></v-combobox>
           </v-flex> 
-          <v-flex xs1/>   
+          <v-flex xs1/> 
           <v-flex xs2>
+            <v-combobox
+              :items="calculationsDaysList"
+              label="Select Days"                    
+              item-text="text"
+              item-value="value"
+              v-model="selectedDays"
+              single-line                            
+            ></v-combobox>
+          </v-flex> 
+          <v-flex xs1/>   
+          <v-flex xs1>
             <v-btn color="primary" dark class="mb-2" @click="calculate">Calculate</v-btn>
           </v-flex> 
           <v-flex xs2/>
@@ -99,7 +110,21 @@ export default {
       teamBenefitList:[],
       gameDateRosters:[],
       playerBenefitList:[],
-      search: '',     
+      search: '', 
+      selectedDays: {
+        text: "All Season",
+        value: '200'
+      },
+      calculationsDaysList: [
+        {text: 'Next 7', value: '7'},
+        {text: 'Next 10', value: '10'},
+        {text: 'Next 15', value: '15'},
+        {text: 'Next 20', value: '20'},
+        {text: 'Next 30', value: '30'},
+        {text: 'Next 45', value: '45'},
+        {text: 'Next 60', value: '60'},
+        {text: 'All Season', value: '200'},
+      ]    
     }
   },
   computed: {
@@ -133,7 +158,7 @@ export default {
         { text: 'C',  value: 'cPlayer'  },
         { text: 'UT',  value: 'utPlayer'  },
       ]
-    },   
+    },
     calculationsListText(){
       return this.calculationsList.map((item) => {           
         item.calculationText = '  CALC '+item.calcId+' - '+item.runTime;        
@@ -204,7 +229,7 @@ export default {
       this.getGameDateRosters(item);
     },
     getTeamBenefitList(item){
-      this.$axios.get(API_URL+'/teamBenefitList/'+item.calcId)
+      this.$axios.get(API_URL+'/teamBenefitList/'+item.calcId+'/'+this.selectedDays.value)
         .then(response => {
             this.teamBenefitList = response.data
         }) 
@@ -213,7 +238,7 @@ export default {
         });
     },     
     getGameDateRosters(item){     
-      this.$axios.get(API_URL+'/calculations/'+item.calcId)
+      this.$axios.get(API_URL+'/calculations/'+item.calcId+'/'+this.selectedDays.value)
         .then(response => {
             this.gameDateRosters = response.data.gameDateRosterList;
             this.playerBenefitList = response.data.playerUsageList;            
