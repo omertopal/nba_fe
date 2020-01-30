@@ -34,6 +34,7 @@
             <v-data-table
               :headers="playerHeaders"
               :items="playerBenefitList"
+              :items-per-page="12"
               item-key="player"
               sort-by="totalUsage"
               :sort-desc=true
@@ -56,6 +57,7 @@
             <v-data-table
               :headers="teamHeaders"
               :items="teamBenefitList"
+              :items-per-page="30"
               item-key="team"
               sort-by="utCount"
               :sort-desc=true
@@ -81,6 +83,7 @@
             <v-data-table
               :headers="headers"
               :items="gameDateRostersComputed"
+              :items-per-page="180"
               item-key="gameDate"
               sort-by="gameDate"
               class="elevation-1"

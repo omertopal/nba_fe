@@ -7,6 +7,7 @@
             <v-data-table
               :headers="headers"
               :items="playersComputed"
+              :items-per-page="12"
               item-key="id"
               sort-by="avgPts"
               class="elevation-1"
